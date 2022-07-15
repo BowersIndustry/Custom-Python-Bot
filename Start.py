@@ -2,9 +2,14 @@
 import os
 from os.path import exists
 
-fileNames = ["name", "sex", "hobby"]
+fileNames = ["name.a", "sex.a", "hobby.a", "customCommands.a"]
 
 SetupAlreadyDone = False
+
+command2Start = 3
+command3Start = 6
+
+content = ""
 
 ExistsNeed = exists (fileNames[0])
 if ExistsNeed == False:
@@ -14,6 +19,8 @@ if ExistsNeed == False:
         file.write("")
     with open(fileNames[2], "w") as file:
         file.write("")
+    with open(fileNames[3], "w") as file:
+        file.write("cmd1,This command will be YOUR command!,print,Test,cmd2,This command will be YOUR command!,print,Test2,cmd3,This command will be YOUR command!,print,Test3")
     
 
 with open(fileNames[2], "r") as file:
@@ -35,7 +42,6 @@ if SetupAlreadyDone == True:
     with open(fileNames[0], "r") as file:
         content = file.read()
     Name = content
-    #print (f"Name: {Name}\nSex: {MaleFemale}\nHobby: {Hobby}")
 elif SetupAlreadyDone == False:
     print("To use this bot, you must finish customizing it.\n")
 
@@ -67,6 +73,46 @@ elif SetupAlreadyDone == False:
             print("Error! Expected a value but got nothing.")
             Error = True
 
+with open(fileNames[3], "r") as file:
+    content = file.read()
+    content = content.split(',')
+    if content[2] == "print":
+        command2Start = 4
+    if content[command2Start + 2] == "print":
+        command3Start = command2Start + 4
+
 if Error == False:
-    print(f"{Name} is ready.")
-            
+    print(f"{Name} is ready.\n")
+
+    while 1 < 2:
+        command = input("What do you want me to do? (Use \"help\" for a list of commands!)\n")
+        if command == "help":
+            print(f"\"about\" will give you some details about me.\n\"{content[0]}\" {content[1]}\n\"{content[command2Start]}\" {content[command2Start + 1]}\n\"{content[command3Start]}\" {content[command3Start + 1]}")
+        elif command == "about":
+            print(f"\nHello I am {Name}.\nI am a {MaleFemale}.\nMy favorite thing to do is {Hobby}.\n")
+        elif command == content[0]:
+            if content[2] == "print":
+                print(content[3])
+            elif content[2] == "commandThingy2":
+                print(content[3])
+            elif content[2] == "commandThingy3":
+                print(content[3])
+            print()
+        elif command == content[command2Start]:
+            if content[command2Start + 2] == "print":
+                print(content[command2Start + 3])
+            elif content[command2Start + 2] == "commandThingy2":
+                print(content[3])
+            elif content[command2Start + 2] == "commandThingy3":
+                print(content[3])
+            print()
+        elif command == content[command3Start]:
+            if content[command3Start + 2] == "print":
+                print(content[command3Start + 2])
+            elif content[command3Start + 2] == "commandThingy2":
+                print(content[3])
+            elif content[command3Start + 2] == "commandThingy3":
+                print(content[3])
+            print()
+        else:
+            print("That is not a valid command.")
