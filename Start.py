@@ -87,7 +87,7 @@ if Error == False:
     while 1 < 2:
         command = input("What do you want me to do? (Use \"help\" for a list of commands!)\n")
         if command == "help":
-            print(f"\"about\" will give you some details about me.\n\"{content[0]}\" {content[1]}\n\"{content[command2Start]}\" {content[command2Start + 1]}\n\"{content[command3Start]}\" {content[command3Start + 1]}")
+            print(f"\"about\" will give you some details about me.\n\"{content[0]}\" {content[1]}\n\"{content[command2Start]}\" {content[command2Start + 1]}\n\"{content[command3Start]}\" {content[command3Start + 1]}\n")
         elif command == "about":
             print(f"\nHello I am {Name}.\nI am a {MaleFemale}.\nMy favorite thing to do is {Hobby}.\n")
         elif command == content[0]:
