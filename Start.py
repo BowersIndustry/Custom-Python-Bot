@@ -2,7 +2,7 @@
 import os
 from os.path import exists
 
-fileNames = ["name.a", "sex.a", "hobby.a", "customCommands.a"]
+fileNames = ["name.kyn", "sex.kyn", "hobby.kyn", "customCommands.kyn"]
 
 SetupAlreadyDone = False
 
@@ -13,7 +13,7 @@ SecondCmd = ""
 
 content = ""
 
-ExistsNeed = exists (fileNames[0])
+ExistsNeed = exists (fileNames[3])
 if ExistsNeed == False:
     with open(fileNames[0], "w") as file:
         file.write("")
@@ -22,13 +22,16 @@ if ExistsNeed == False:
     with open(fileNames[2], "w") as file:
         file.write("")
     with open(fileNames[3], "w") as file:
-        file.write("cmd1,This command will be YOUR command!,print,Test,cmd2,This command will be YOUR command!,print,Test2,cmd3,This command will be YOUR command!,print,Test3")
+        file.write("")
     
 
-with open(fileNames[2], "r") as file:
+with open(fileNames[3], "r") as file:
     content = file.read()
     if content != "":
         SetupAlreadyDone = True
+    else:
+        with open(fileNames[3], "w") as file:
+            file.write('print,is a custom command that prints text to the console.,print,Hello World!,run,is a custom command that will run 2 commands at once!,run,print,name,name,is a custom command that will change my name to "New Name",name,New Name')
 
 Error = False
 Name = ""
@@ -37,6 +40,8 @@ Hobby = ""
 print("Starting Up...")
 
 if SetupAlreadyDone == True:
+    with open(fileNames[2], "r") as file:
+        content = file.read()
     Hobby = content
     with open(fileNames[1], "r") as file:
         content = file.read()
@@ -49,7 +54,7 @@ elif SetupAlreadyDone == False:
 
     MaleFemale = input("What is the sex for your bot? Male or Female?\n")
 
-    if MaleFemale == "male" or MaleFemale == "Male" or MaleFemale == "female" or MaleFemale == "Female":
+    if MaleFemale == "male" or MaleFemale == "female":
         print(f"Your bot is a {MaleFemale}\n")
     elif 1 < 2:
         print(f"Error! Expected either 'male' or 'female' but got {MaleFemale}")
@@ -78,14 +83,26 @@ elif SetupAlreadyDone == False:
 with open(fileNames[3], "r") as file:
     content = file.read()
     content = content.split(',')
-    if content[2] == "print":
+    if content[2] == "print" or content[2] == "name":
         command2Start = 4
     elif content[2] == "run":
         command2Start = 5
-    if content[command2Start + 2] == "print":
+    if content[command2Start + 2] == "print" or content[command2Start + 2] == "name":
         command3Start = command2Start + 4
     elif content[command2Start + 2] =="run":
         command3Start = command2Start + 5
+
+if Name == "":
+    print("Error! Name is empty.")
+    Error = True
+if MaleFemale == "female" or MaleFemale == "male":
+    MaleFemale = MaleFemale
+else:
+    print("Error! Sex is not male or female.")
+    Error = True
+if Hobby == "":
+    print("Error! Hobby is empty.")
+    Error = True
 
 if Error == False:
     print(f"{Name} is ready.\n")
@@ -111,8 +128,10 @@ if Error == False:
                 runNewCmd = True
                 command = content[3]
                 SecondCmd = content[4]
-            elif content[2] == "commandThingy3":
-                print(content[3])
+            elif content[2] == "name":
+                Name = content[3]
+                with open(fileNames[0], "w") as file:
+                    file.write(Name)
             if runNewCmd == False:
                 print()
         elif command == content[command2Start]:
@@ -122,8 +141,10 @@ if Error == False:
                 runNewCmd = True
                 command = content[command2Start + 3]
                 SecondCmd = content[command2Start + 4]
-            elif content[command2Start + 2] == "commandThingy3":
-                print(content[3])
+            elif content[command2Start + 2] == "name":
+                Name = content[command2Start + 3]
+                with open(fileNames[0], "w") as file:
+                    file.write(Name)
             if runNewCmd == False:
                 print()
         elif command == content[command3Start]:
@@ -133,9 +154,11 @@ if Error == False:
                 runNewCmd = True
                 command = content[command3Start + 3]
                 SecondCmd = content[command3Start + 4]
-            elif content[command3Start + 2] == "commandThingy3":
-                print(content[3])
+            elif content[command3Start + 2] == "name":
+                Name = content[command3Start + 3]
+                with open(fileNames[0], "w") as file:
+                    file.write(Name)
             if runNewCmd == False:
                 print()
         else:
-            print("That is not a valid command.")
+            print("That is not a valid command.\n")
