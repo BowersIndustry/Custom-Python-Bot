@@ -8,6 +8,8 @@ SetupAlreadyDone = False
 
 command2Start = 3
 command3Start = 6
+runNewCmd = False
+SecondCmd = ""
 
 content = ""
 
@@ -78,41 +80,62 @@ with open(fileNames[3], "r") as file:
     content = content.split(',')
     if content[2] == "print":
         command2Start = 4
+    elif content[2] == "run":
+        command2Start = 5
     if content[command2Start + 2] == "print":
         command3Start = command2Start + 4
+    elif content[command2Start + 2] =="run":
+        command3Start = command2Start + 5
 
 if Error == False:
     print(f"{Name} is ready.\n")
 
     while 1 < 2:
-        command = input("What do you want me to do? (Use \"help\" for a list of commands!)\n")
+        if runNewCmd == False:
+            if SecondCmd == "":
+                command = input("What do you want me to do? (Use \"help\" for a list of commands!)\n")
+            else:
+                command = SecondCmd
+                SecondCmd = ""
+        runNewCmd = False
         if command == "help":
-            print(f"\"about\" will give you some details about me.\n\"{content[0]}\" {content[1]}\n\"{content[command2Start]}\" {content[command2Start + 1]}\n\"{content[command3Start]}\" {content[command3Start + 1]}\n")
+            print(f"\"about\" will give you some details about me.\n\"exit\" will shut me down.\n\"{content[0]}\" {content[1]}\n\"{content[command2Start]}\" {content[command2Start + 1]}\n\"{content[command3Start]}\" {content[command3Start + 1]}\n")
         elif command == "about":
             print(f"\nHello I am {Name}.\nI am a {MaleFemale}.\nMy favorite thing to do is {Hobby}.\n")
+        elif command == "exit":
+            break
         elif command == content[0]:
             if content[2] == "print":
                 print(content[3])
-            elif content[2] == "commandThingy2":
-                print(content[3])
+            elif content[2] == "run":
+                runNewCmd = True
+                command = content[3]
+                SecondCmd = content[4]
             elif content[2] == "commandThingy3":
                 print(content[3])
-            print()
+            if runNewCmd == False:
+                print()
         elif command == content[command2Start]:
             if content[command2Start + 2] == "print":
                 print(content[command2Start + 3])
-            elif content[command2Start + 2] == "commandThingy2":
-                print(content[3])
+            elif content[command2Start + 2] == "run":
+                runNewCmd = True
+                command = content[command2Start + 3]
+                SecondCmd = content[command2Start + 4]
             elif content[command2Start + 2] == "commandThingy3":
                 print(content[3])
-            print()
+            if runNewCmd == False:
+                print()
         elif command == content[command3Start]:
             if content[command3Start + 2] == "print":
-                print(content[command3Start + 2])
-            elif content[command3Start + 2] == "commandThingy2":
-                print(content[3])
+                print(content[command3Start + 3])
+            elif content[command3Start + 2] == "run":
+                runNewCmd = True
+                command = content[command3Start + 3]
+                SecondCmd = content[command3Start + 4]
             elif content[command3Start + 2] == "commandThingy3":
                 print(content[3])
-            print()
+            if runNewCmd == False:
+                print()
         else:
             print("That is not a valid command.")
